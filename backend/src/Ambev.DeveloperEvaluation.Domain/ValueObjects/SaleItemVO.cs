@@ -1,15 +1,32 @@
 ﻿
+using Ambev.DeveloperEvaluation.Domain.Entities;
+
 namespace Ambev.DeveloperEvaluation.Domain.ValueObjects
 {
     public class SaleItemVO
     {
+        private SaleItemVO(){}
 
-        public Guid SaleId { get; }
-        public Guid ProductId { get; }
-        public string ProductName { get; }
-        public string ProductCategory { get; }
-        public decimal ProductPrice { get; }
-        public int Quantity { get; }
+        public SaleItemVO(Sale sale, Guid productId, string productName, string productCategory, decimal productPrice, int quantity)
+        {
+            Sale = sale;
+            SaleId = sale.Id;
+            ProductId = productId;
+            ProductName = productName;
+            ProductCategory = productCategory;
+            ProductPrice = productPrice;
+            Quantity = quantity;
+        }
+
+        public virtual Sale Sale { get; private set; }
+        public Guid SaleId { get; private set; }
+        public Guid ProductId { get; private set; }
+        public string ProductName { get; private set; }
+        public string ProductCategory { get; private set; }
+        public decimal ProductPrice { get; private set; }
+        public int Quantity { get; private set; }
+
+        //Computed properties
         public decimal Total => ProductPrice * Quantity;
     }
 }

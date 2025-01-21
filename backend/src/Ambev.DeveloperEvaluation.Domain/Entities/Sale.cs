@@ -6,16 +6,25 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
 {
     public class Sale : BaseEntity
     {
-        public Guid SaleNumber => base.Id;
+        protected Sale()
+        {
+            Items = new List<SaleItemVO>();
+        }
+
         public DateTime SaleDate { get; private set; }
         public decimal SaleTotal { get; private set; }
-        public decimal ListPrice => Items.Sum(x => x.Total);
-        public string[] SaleProducts => Items.Select(x => x.ProductName).ToArray();
+     
         public SaleCustomerVO SaleCustomer { get; private set; }
         public SaleBranchVO Branch { get; private set; }
-        public ICollection<SaleItemVO> Items { get; private set; }
         public int DiscountPercentage { get; private set; }
         public bool Cancelled { get; private set; }
+        public virtual ICollection<SaleItemVO> Items { get; private set; }
+
+
+        //Computed properties
+        public string SaleNumber => base.Id.ToString();
+        public decimal ListPrice => Items.Sum(x => x.Total);
+        public string[] SaleProducts => Items.Select(x => x.ProductName).ToArray();
 
         public ValidationResultDetail Validate()
         {
