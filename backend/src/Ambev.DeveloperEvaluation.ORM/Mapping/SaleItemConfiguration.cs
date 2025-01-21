@@ -37,12 +37,6 @@ namespace Ambev.DeveloperEvaluation.ORM.Mapping
                 .IsRequired();
 
 
-
-            builder.HasOne<Sale>()
-                .WithMany(x => x.Items)
-                .HasForeignKey(x => x.SaleId)
-                .OnDelete(DeleteBehavior.Cascade);
-
             builder.Ignore(si => si.Total);
         }
     }

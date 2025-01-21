@@ -9,16 +9,17 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
         protected Sale()
         {
             Items = new List<SaleItemVO>();
+            SaleDate = DateTime.UtcNow;
         }
 
-        public DateTime SaleDate { get; private set; }
-        public decimal SaleTotal { get; private set; }
+        public DateTime SaleDate { get; protected set; }
+        public decimal SaleTotal { get; protected set; }
      
-        public SaleCustomerVO SaleCustomer { get; private set; }
-        public SaleBranchVO Branch { get; private set; }
-        public int DiscountPercentage { get; private set; }
-        public bool Cancelled { get; private set; }
-        public virtual ICollection<SaleItemVO> Items { get; private set; }
+        public SaleCustomerVO SaleCustomer { get; protected set; }
+        public SaleBranchVO Branch { get; protected set; }
+        public int DiscountPercentage { get; protected set; }
+        public bool Cancelled { get; protected set; }
+        public virtual ICollection<SaleItemVO> Items { get; protected set; }
 
 
         //Computed properties
