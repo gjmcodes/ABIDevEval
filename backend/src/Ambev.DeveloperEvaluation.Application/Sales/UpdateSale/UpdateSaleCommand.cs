@@ -1,12 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+using Ambev.DeveloperEvaluation.Application.Sales.Shared.Results;
+using MediatR;
 
 namespace Ambev.DeveloperEvaluation.Application.Sales.UpdateSale
 {
-    internal class UpdateSaleCommand
+    public class UpdateSaleCommand : IRequest<SaleResult>
     {
+        public Guid Id { get; set; }
+        public Dictionary<Guid, int> ProductQuantity { get; set; }
+        public Guid SaleBranchId { get; set; }
+        public Guid UserId { get; set; }
     }
 }

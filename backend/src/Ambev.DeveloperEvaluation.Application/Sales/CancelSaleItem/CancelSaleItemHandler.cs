@@ -25,7 +25,7 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.CancelSaleItem
 
             saleItem.CancelItem();
 
-            var saleUpdate = await _saleRepository.UpdateAsync(request.SaleId, sale);
+            var saleUpdate = await _saleRepository.UpdateAsync(sale);
 
             var result = _mapper.Map<SaleResult>(saleUpdate);
 
