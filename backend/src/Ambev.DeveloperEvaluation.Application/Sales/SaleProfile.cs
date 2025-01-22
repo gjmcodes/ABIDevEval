@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Ambev.DeveloperEvaluation.Application.Sales.CreateSale;
 using Ambev.DeveloperEvaluation.Application.Sales.DTOs;
 using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Queries;
@@ -13,6 +14,8 @@ namespace Ambev.DeveloperEvaluation.Application.Sales
             CreateMap<ValidCreateSaleDTO, Sale>()
                 .ConstructUsing(dto =>
                         new Sale(dto.customer, dto.branch, dto.products));
+
+            CreateMap<Sale, CreateSaleResult>();
         }
     }
 }
