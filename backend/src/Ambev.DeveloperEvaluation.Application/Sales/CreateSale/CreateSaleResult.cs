@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale
+﻿namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale
 {
-    internal class CreateSaleResult
+    public class CreateSaleResult
     {
+        public string SaleNumber { get; set; }
     }
 }

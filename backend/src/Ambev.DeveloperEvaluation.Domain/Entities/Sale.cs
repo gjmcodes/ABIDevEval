@@ -17,29 +17,62 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
      
         public SaleCustomerVO SaleCustomer { get; protected set; }
         public SaleBranchVO Branch { get; protected set; }
-        public int DiscountPercentage { get; protected set; }
         public bool Cancelled { get; protected set; }
         public virtual ICollection<SaleItemVO> Items { get; protected set; }
 
 
         //Computed properties
         public string SaleNumber => base.Id.ToString();
-        public decimal ListPrice => Items.Sum(x => x.Total);
+        public decimal ListPrice => Items.Sum(x => x.ListPrice);
         public string[] SaleProducts => Items.Select(x => x.ProductName).ToArray();
+
+        #region BUSINESS RULES
+        protected short GetSaleItemsDiscountPercentage(int productQuantity, decimal productPrice)
+        {
+            const short DISCOUNT_4_to_9_IDENTICAL = 10;
+            const short DISCOUNT_10_to_20_IDENTICAL = 20;
+
+            if (productQuantity >= 4 && productQuantity < 10)
+                return DISCOUNT_4_to_9_IDENTICAL;
+
+            if (productQuantity >= 10 && productQuantity <= 20)
+                return DISCOUNT_10_to_20_IDENTICAL;
+
+            return 0;
+        }
+        
+        #endregion
 
         public ValidationResultDetail Validate()
         {
             throw new NotImplementedException();
         }
 
-        public void ApplyDiscounts4To9IdenticalItems()
+     
+
+        public void UpdateSale(Sale sale)
         {
-            throw new NotImplementedException();
         }
 
-        public void ApplyDiscounts10To20IdenticalItems()
+        public void AddSaleItem(ProductExternalVO product, int productQuantity)
         {
-            throw new NotImplementedException();
+            var saleDiscount = GetSaleItemsDiscountPercentage(productQuantity, product.price);
+            var amountPrice = (product.price * productQuantity);
+            var discountPrice = amountPrice * (saleDiscount / 100);
+            var totalPrice = amountPrice - discountPrice;
+
+            var saleItem = 
+                new SaleItemVO(
+               sale: this,
+               productId: product.id,
+               productName: product.name,
+               productCategory: product.description,
+               productPrice: product.price,
+               quantity: productQuantity,
+               discountPercentage: saleDiscount,
+               totalPrice: totalPrice);
+
+            this.Items.Add(saleItem);
         }
     }
 }

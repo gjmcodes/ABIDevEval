@@ -7,7 +7,14 @@ namespace Ambev.DeveloperEvaluation.Domain.ValueObjects
     {
         private SaleItemVO(){}
 
-        public SaleItemVO(Sale sale, Guid productId, string productName, string productCategory, decimal productPrice, int quantity)
+        public SaleItemVO(Sale sale, Guid productId, 
+            string productName, 
+            string productCategory, 
+            decimal productPrice, 
+            int quantity,
+            int discountPercentage,
+            decimal totalPrice
+            )
         {
             Sale = sale;
             SaleId = sale.Id;
@@ -16,6 +23,8 @@ namespace Ambev.DeveloperEvaluation.Domain.ValueObjects
             ProductCategory = productCategory;
             ProductPrice = productPrice;
             Quantity = quantity;
+            DiscountPercentage = discountPercentage;
+            TotalPrice = totalPrice;
         }
 
         public virtual Sale Sale { get; private set; }
@@ -25,8 +34,11 @@ namespace Ambev.DeveloperEvaluation.Domain.ValueObjects
         public string ProductCategory { get; private set; }
         public decimal ProductPrice { get; private set; }
         public int Quantity { get; private set; }
+        public int DiscountPercentage { get; private set; }
+        public decimal TotalPrice { get; private set; }
 
         //Computed properties
-        public decimal Total => ProductPrice * Quantity;
+        public decimal ListPrice => ProductPrice * Quantity;
+
     }
 }
