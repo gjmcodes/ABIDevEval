@@ -17,6 +17,12 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales
         private readonly IMediator _mediator;
         private readonly IMapper _mapper;
 
+        public SalesController(IMediator mediator, IMapper mapper)
+        {
+            _mediator = mediator;
+            _mapper = mapper;
+        }
+
 
         /// <summary>
         /// Creates a new user
