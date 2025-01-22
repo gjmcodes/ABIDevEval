@@ -3,11 +3,10 @@ using Ambev.DeveloperEvaluation.Domain.ReadOnlyRepositories;
 
 namespace Ambev.DeveloperEvaluation.ORM.ReadOnlyRepositories
 {
-    public class UserReadOnlyRepository : ReadOnlyRepository<UserExternalQuery>, IUserReadOnlyRepository
+    public class BranchReadOnlyRepository : ReadOnlyRepository<BranchExternalQuery>, IBranchReadOnlyRepository
     {
-        const string COLLECTION_NAME = "Users";
-
-        public UserReadOnlyRepository(ReadOnlyContext ctx) 
+        const string COLLECTION_NAME = "Branches";
+        public BranchReadOnlyRepository(ReadOnlyContext ctx)
             : base(ctx, COLLECTION_NAME)
         {
         }

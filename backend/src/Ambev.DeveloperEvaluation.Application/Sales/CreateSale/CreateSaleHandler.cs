@@ -19,6 +19,19 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale
         private readonly IBranchReadOnlyRepository _readOnlyBranchRepository;
         private readonly IMapper _mapper;
 
+        public CreateSaleHandler(
+            ISaleRepository saleRepository, 
+            IProductReadOnlyRepository readOnlyProductRepository, 
+            IUserReadOnlyRepository readOnlyUserRepository, 
+            IBranchReadOnlyRepository readOnlyBranchRepository, 
+            IMapper mapper)
+        {
+            _saleRepository = saleRepository;
+            _readOnlyProductRepository = readOnlyProductRepository;
+            _readOnlyUserRepository = readOnlyUserRepository;
+            _readOnlyBranchRepository = readOnlyBranchRepository;
+            _mapper = mapper;
+        }
 
         public async Task<CreateSaleResult> Handle(CreateSaleCommand command, CancellationToken cancellationToken)
         {
@@ -44,7 +57,7 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale
 
             Parallel.ForEach(productsTask.Result, productQuery =>
             {
-                var prodId = productQuery.id;
+                var prodId = productQuery.GuidId;
 
                 if (!command.ProductQuantity.ContainsKey(prodId))
                 {

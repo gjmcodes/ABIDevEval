@@ -4,7 +4,13 @@ using Ambev.DeveloperEvaluation.Domain.ReadOnlyRepositories;
 
 namespace Ambev.DeveloperEvaluation.ORM.ReadOnlyRepositories
 {
-    internal class ProductReadOnlyRepository : ReadOnlyRepository<ProductExternalQuery>, IProductReadOnlyRepository
+    public class ProductReadOnlyRepository : ReadOnlyRepository<ProductExternalQuery>, IProductReadOnlyRepository
     {
+        const string COLLECTION_NAME = "Products";
+
+        public ProductReadOnlyRepository(ReadOnlyContext ctx) 
+            : base(ctx, COLLECTION_NAME)
+        {
+        }
     }
 }

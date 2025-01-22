@@ -37,9 +37,18 @@ public class Program
                     b => b.MigrationsAssembly("Ambev.DeveloperEvaluation.ORM")
                 )
             );
+            builder.Services.AddScoped<ReadOnlyContext>(sp =>
+            {
+                var nosqlConnString = builder.Configuration.GetConnectionString("ReadOnlyConnection").Split(";");
+                var server = nosqlConnString[0];
+                var database = nosqlConnString[1];
+
+                var ctx = new ReadOnlyContext(server, database);
+
+                return ctx;
+            });
 
             builder.Services.AddJwtAuthentication(builder.Configuration);
-
             builder.RegisterDependencies();
 
             builder.Services.AddAutoMapper(typeof(Program).Assembly, typeof(ApplicationLayer).Assembly);

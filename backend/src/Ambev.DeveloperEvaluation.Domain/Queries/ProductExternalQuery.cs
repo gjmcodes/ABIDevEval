@@ -1,9 +1,16 @@
-﻿namespace Ambev.DeveloperEvaluation.Domain.Queries
+﻿using MongoDB.Bson.Serialization.Attributes;
+
+namespace Ambev.DeveloperEvaluation.Domain.Queries
 {
     public class ProductExternalQuery : Query
     {
+        [BsonElement("name")]
         public string name;
-        public string description;
+
+        [BsonElement("category")]
+        public string category;
+
+        [BsonElement("price")]
         public decimal price;
     }
 }

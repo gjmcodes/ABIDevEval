@@ -19,13 +19,13 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
             this.SaleCustomer = new SaleCustomerVO(
                 sale: this,
                 customerName: saleCustomer.name,
-                customerId: saleCustomer.id,
+                customerId: saleCustomer.GuidId,
                 customerEmail: saleCustomer.email
                );
 
             this.Branch = new SaleBranchVO(
                 sale: this,
-                branchId: saleBranch.id,
+                branchId: saleBranch.GuidId,
                 branchName: saleBranch.name);
 
             foreach (var item in products)
@@ -89,9 +89,9 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
             var saleItem = 
                 new SaleItemVO(
                sale: this,
-               productId: product.id,
+               productId: product.GuidId,
                productName: product.name,
-               productCategory: product.description,
+               productCategory: product.category,
                productPrice: product.price,
                quantity: productQuantity,
                discountPercentage: saleDiscount,

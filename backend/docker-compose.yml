@@ -38,9 +38,9 @@ services:
     image: mongo:8.0    
     environment:
         MONGO_INITDB_ROOT_USERNAME: developer
-        MONGO_INITDB_ROOT_PASSWORD: ev@luAt10n
+        MONGO_INITDB_ROOT_PASSWORD: ev4luAt14n
     ports:
-      - "27017"
+      - "27017:27017"
 
   ambev.developerevaluation.cache:
     container_name: ambev_developer_evaluation_cache 
