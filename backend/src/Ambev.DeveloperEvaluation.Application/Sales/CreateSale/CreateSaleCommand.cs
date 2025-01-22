@@ -8,7 +8,6 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale
         public Dictionary<Guid, int> ProductQuantity { get; set; }
         public Guid SaleBranchId { get; set; }
         public Guid UserId { get; set; }
-
     }
 
 }
