@@ -114,6 +114,7 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
             this.SaleBranch = sale.SaleBranch;
             this.Items = sale.Items;
             this.SaleTotal = CalculateSaleTotal();
+            this.AlteredDate = DateTime.UtcNow;
         }
         public void CancelSale()
         {
