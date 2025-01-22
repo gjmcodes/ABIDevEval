@@ -23,7 +23,7 @@ namespace Ambev.DeveloperEvaluation.ORM.Mapping
                 .IsRequired()
                 .HasMaxLength(150);
 
-            builder.Property(si => si.Total)
+            builder.Property(si => si.TotalPrice)
                 .HasColumnType("decimal(18,2)")
                 .IsRequired();
 
@@ -31,13 +31,19 @@ namespace Ambev.DeveloperEvaluation.ORM.Mapping
                 .HasColumnType("smallint")
                 .IsRequired();
 
+            builder.Property(si => si.DiscountPercentage)
+               .HasColumnType("smallint")
+               .IsRequired();
 
             builder.Property(si => si.ProductPrice)
                 .HasColumnType("decimal(18, 2)")
                 .IsRequired();
 
+            builder.Property(si => si.TotalPrice)
+                .HasColumnType("decimal(18, 2)")
+                .IsRequired();
 
-            builder.Ignore(si => si.Total);
+            builder.Ignore(si => si.ListPrice);
         }
     }
 }

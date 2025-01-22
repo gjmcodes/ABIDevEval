@@ -12,7 +12,7 @@ namespace Ambev.DeveloperEvaluation.Domain.ValueObjects
             string productCategory, 
             decimal productPrice, 
             int quantity,
-            int discountPercentage,
+            ushort discountPercentage,
             decimal totalPrice
             )
         {
@@ -34,7 +34,7 @@ namespace Ambev.DeveloperEvaluation.Domain.ValueObjects
         public string ProductCategory { get; private set; }
         public decimal ProductPrice { get; private set; }
         public int Quantity { get; private set; }
-        public int DiscountPercentage { get; private set; }
+        public ushort DiscountPercentage { get; private set; }
         public decimal TotalPrice { get; private set; }
 
         //Computed properties

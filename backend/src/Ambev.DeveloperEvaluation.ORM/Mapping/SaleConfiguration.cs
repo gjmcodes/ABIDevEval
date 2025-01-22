@@ -16,7 +16,6 @@ namespace Ambev.DeveloperEvaluation.ORM.Mapping
 
             builder.Property(s => s.SaleNumber).IsRequired().HasMaxLength(36);
             builder.Property(s => s.ListPrice).HasColumnType("decimal(18,2)").IsRequired();
-            builder.Property(s => s.DiscountPercentage).IsRequired();
             builder.Property(s => s.Cancelled)
             .IsRequired();
 

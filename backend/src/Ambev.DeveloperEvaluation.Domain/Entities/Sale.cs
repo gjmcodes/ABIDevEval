@@ -27,10 +27,10 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
         public string[] SaleProducts => Items.Select(x => x.ProductName).ToArray();
 
         #region BUSINESS RULES
-        protected short GetSaleItemsDiscountPercentage(int productQuantity, decimal productPrice)
+        protected ushort GetSaleItemsDiscountPercentage(int productQuantity, decimal productPrice)
         {
-            const short DISCOUNT_4_to_9_IDENTICAL = 10;
-            const short DISCOUNT_10_to_20_IDENTICAL = 20;
+            const ushort DISCOUNT_4_to_9_IDENTICAL = 10;
+            const ushort DISCOUNT_10_to_20_IDENTICAL = 20;
 
             if (productQuantity >= 4 && productQuantity < 10)
                 return DISCOUNT_4_to_9_IDENTICAL;
@@ -58,7 +58,7 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
         {
             var saleDiscount = GetSaleItemsDiscountPercentage(productQuantity, product.price);
             var amountPrice = (product.price * productQuantity);
-            var discountPrice = amountPrice * (saleDiscount / 100);
+            var discountPrice = amountPrice * (saleDiscount / 100m);
             var totalPrice = amountPrice - discountPrice;
 
             var saleItem = 
