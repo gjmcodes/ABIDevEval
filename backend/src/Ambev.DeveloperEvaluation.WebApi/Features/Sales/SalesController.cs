@@ -1,5 +1,6 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Sales.CancelSale;
 using Ambev.DeveloperEvaluation.Application.Sales.CreateSale;
+using Ambev.DeveloperEvaluation.Application.Sales.Shared.Results;
 using Ambev.DeveloperEvaluation.Application.Users.CreateUser;
 using Ambev.DeveloperEvaluation.WebApi.Common;
 using Ambev.DeveloperEvaluation.WebApi.Features.Sales.CancelSale;
@@ -33,7 +34,7 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>The created sale details</returns>
         [HttpPost]
-        [ProducesResponseType(typeof(ApiResponseWithData<CreateSaleResult>), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(ApiResponseWithData<SaleResult>), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreateSale([FromBody] CreateSaleRequest request, CancellationToken cancellationToken)
         {
@@ -46,11 +47,11 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales
             var command = _mapper.Map<CreateSaleCommand>(request);
             var response = await _mediator.Send(command, cancellationToken);
 
-            return Created(string.Empty, new ApiResponseWithData<CreateUserResponse>
+            return Created(string.Empty, new ApiResponseWithData<SaleResult>
             {
                 Success = true,
                 Message = "User created successfully",
-                Data = _mapper.Map<CreateUserResponse>(response)
+                Data = response
             });
         }
 
@@ -61,7 +62,7 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>The created sale details</returns>
         [HttpDelete]
-        [ProducesResponseType(typeof(ApiResponseWithData<CreateSaleResult>), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(ApiResponseWithData<SaleResult>), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CancelSale([FromBody] CancelSaleRequest request, CancellationToken cancellationToken)
         {
@@ -74,11 +75,11 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales
             var command = _mapper.Map<CancelSaleCommand>(request);
             var response = await _mediator.Send(command, cancellationToken);
 
-            return Created(string.Empty, new ApiResponseWithData<CreateUserResponse>
+            return Created(string.Empty, new ApiResponseWithData<SaleResult>
             {
                 Success = true,
                 Message = "User created successfully",
-                Data = _mapper.Map<CreateUserResponse>(response)
+                Data = response
             });
         }
     }

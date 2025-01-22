@@ -1,5 +1,6 @@
 ﻿using System.Security.Cryptography;
 using Ambev.DeveloperEvaluation.Application.Sales.DTOs;
+using Ambev.DeveloperEvaluation.Application.Sales.Shared.Results;
 using Ambev.DeveloperEvaluation.Application.Users.CreateUser;
 using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Queries;
@@ -11,7 +12,7 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale
 {
-    public class CreateSaleHandler : IRequestHandler<CreateSaleCommand, CreateSaleResult>
+    public class CreateSaleHandler : IRequestHandler<CreateSaleCommand, SaleResult>
     {
         private readonly ISaleRepository _saleRepository;
         private readonly IProductReadOnlyRepository _readOnlyProductRepository;
@@ -33,7 +34,7 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale
             _mapper = mapper;
         }
 
-        public async Task<CreateSaleResult> Handle(CreateSaleCommand command, CancellationToken cancellationToken)
+        public async Task<SaleResult> Handle(CreateSaleCommand command, CancellationToken cancellationToken)
         {
             //var validator = new CreateSaleCommandValidator();
             //var validationResult = await validator.ValidateAsync(command, cancellationToken);
@@ -77,7 +78,7 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale
 
             //TODO: add cancellation token to repo
             var createdSale = await _saleRepository.CreateAsync(sale);
-            var result = _mapper.Map<CreateSaleResult>(createdSale);
+            var result = _mapper.Map<SaleResult>(createdSale);
 
             return result;
         }

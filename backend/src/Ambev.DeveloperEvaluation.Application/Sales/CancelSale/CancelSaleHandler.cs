@@ -1,5 +1,6 @@
 ﻿
 using Ambev.DeveloperEvaluation.Application.Sales.CreateSale;
+using Ambev.DeveloperEvaluation.Application.Sales.Shared.Results;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using AutoMapper;
 using MediatR;
@@ -7,7 +8,7 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Ambev.DeveloperEvaluation.Application.Sales.CancelSale
 {
-    public class CancelSaleHandler : IRequestHandler<CancelSaleCommand, CancelSaleResult>
+    public class CancelSaleHandler : IRequestHandler<CancelSaleCommand, SaleResult>
     {
 
         private readonly IMapper _mapper;
@@ -19,7 +20,7 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.CancelSale
             _saleRepository = saleRepository;
         }
 
-        public async Task<CancelSaleResult> Handle(CancelSaleCommand request, CancellationToken cancellationToken)
+        public async Task<SaleResult> Handle(CancelSaleCommand request, CancellationToken cancellationToken)
         {
             var sale = await _saleRepository.GetById(request.Id);
             if(sale == null)
@@ -28,7 +29,7 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.CancelSale
             sale.CancelSale();
 
             var saleUpdate = await _saleRepository.UpdateAsync(request.Id, sale);
-            var result = _mapper.Map<CancelSaleResult>(saleUpdate);
+            var result = _mapper.Map<SaleResult>(saleUpdate);
 
             return result;
         }

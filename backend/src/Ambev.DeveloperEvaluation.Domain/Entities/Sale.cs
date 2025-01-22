@@ -9,7 +9,6 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
     {
         protected Sale()
         {
-            SaleDate = DateTime.UtcNow;
         }
 
         public Sale(UserExternalQuery saleCustomer, BranchExternalQuery saleBranch, (ProductExternalQuery product, int quantity)[] products) 
@@ -35,8 +34,10 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
             }
 
             this.SaleTotal = CalculateSaleTotal();
+            this.SaleDate = DateTime.UtcNow;
         }
         public DateTime SaleDate { get; protected set; }
+        public DateTime? AlteredDate { get; protected set; }
         public decimal SaleTotal { get; protected set; }
      
         public SaleCustomerVO SaleCustomer { get; protected set; }
@@ -114,6 +115,12 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
             {
                 item.CancelItem();
             }
+        }
+
+        public SaleItemVO GetSaleItem(Guid productId)
+        {
+            var saleItem = Items.FirstOrDefault(x => x.ProductId == productId);
+            return saleItem;
         }
 
        

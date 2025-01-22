@@ -18,6 +18,10 @@ namespace Ambev.DeveloperEvaluation.ORM.Mapping
             builder.Property(s => s.ListPrice).HasColumnType("decimal(18,2)").IsRequired();
             builder.Property(s => s.Cancelled)
             .IsRequired();
+            builder.Property(s => s.SaleDate)
+           .IsRequired();
+            builder.Property(s => s.AlteredDate)
+           .IsRequired(false);
 
             builder.OwnsOne(s => s.SaleCustomer, customer =>
             {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Ambev.DeveloperEvaluation.Application.Sales.CancelSaleItem
 {
-    internal class CancelSaleCommand
+    public class CancelSaleItemValidator
     {
     }
 }

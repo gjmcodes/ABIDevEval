@@ -2,8 +2,10 @@
 using Ambev.DeveloperEvaluation.Application.Sales.CancelSale;
 using Ambev.DeveloperEvaluation.Application.Sales.CreateSale;
 using Ambev.DeveloperEvaluation.Application.Sales.DTOs;
+using Ambev.DeveloperEvaluation.Application.Sales.Shared.Results;
 using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Queries;
+using Ambev.DeveloperEvaluation.Domain.ValueObjects;
 using AutoMapper;
 
 namespace Ambev.DeveloperEvaluation.Application.Sales
@@ -15,10 +17,10 @@ namespace Ambev.DeveloperEvaluation.Application.Sales
             CreateMap<ValidCreateSaleDTO, Sale>()
                 .ConstructUsing(dto =>
                         new Sale(dto.customer, dto.branch, dto.products));
-
-            CreateMap<Sale, CreateSaleResult>();
-            CreateMap<Sale, CancelSaleResult>();
-
+            CreateMap<Sale, SaleResult>();
+            CreateMap<SaleBranchVO, SaleBranchResult>();
+            CreateMap<SaleCustomerVO, SaleCustomerResult>();
+            CreateMap<SaleItemVO, SaleItemResult>();
         }
     }
 }
