@@ -43,6 +43,10 @@ namespace Ambev.DeveloperEvaluation.ORM.Mapping
                 .HasColumnType("decimal(18, 2)")
                 .IsRequired();
 
+
+            builder.Property(si => si.Cancelled)
+                .IsRequired();
+
             builder.Ignore(si => si.ListPrice);
         }
     }

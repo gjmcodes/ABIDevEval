@@ -5,12 +5,12 @@ namespace Ambev.DeveloperEvaluation.Domain.ValueObjects
 {
     public class SaleItemVO
     {
-        private SaleItemVO(){}
+        private SaleItemVO() { }
 
-        public SaleItemVO(Sale sale, Guid productId, 
-            string productName, 
-            string productCategory, 
-            decimal productPrice, 
+        public SaleItemVO(Sale sale, Guid productId,
+            string productName,
+            string productCategory,
+            decimal productPrice,
             int quantity,
             ushort discountPercentage,
             decimal totalPrice
@@ -36,6 +36,7 @@ namespace Ambev.DeveloperEvaluation.Domain.ValueObjects
         public int Quantity { get; private set; }
         public ushort DiscountPercentage { get; private set; }
         public decimal TotalPrice { get; private set; }
+        public bool Cancelled { get; private set; }
 
         //Computed properties
         public decimal ListPrice => ProductPrice * Quantity;
