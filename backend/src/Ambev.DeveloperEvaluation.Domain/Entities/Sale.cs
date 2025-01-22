@@ -12,14 +12,14 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
             SaleDate = DateTime.UtcNow;
         }
 
-        public Sale(UserExternalVO saleUser, BranchExternalVO saleBranch, (ProductExternalVO product, int quantity)[] products) 
+        public Sale(UserExternalVO saleCustomer, BranchExternalVO saleBranch, (ProductExternalVO product, int quantity)[] products) 
             : base()
         {
             this.SaleCustomer = new SaleCustomerVO(
                 sale: this,
-                customerName: saleUser.name,
-                customerId: saleUser.userId,
-                customerEmail: saleUser.email
+                customerName: saleCustomer.name,
+                customerId: saleCustomer.userId,
+                customerEmail: saleCustomer.email
                );
 
             this.Branch = new SaleBranchVO(
