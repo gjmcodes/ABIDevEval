@@ -12,6 +12,28 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
             SaleDate = DateTime.UtcNow;
         }
 
+        public Sale(UserExternalVO saleUser, BranchExternalVO saleBranch, (ProductExternalVO product, int quantity)[] products) 
+            : base()
+        {
+            this.SaleCustomer = new SaleCustomerVO(
+                sale: this,
+                customerName: saleUser.name,
+                customerId: saleUser.userId,
+                customerEmail: saleUser.email
+               );
+
+            this.Branch = new SaleBranchVO(
+                sale: this,
+                branchId: saleBranch.id,
+                branchName: saleBranch.name);
+
+            foreach (var item in products)
+            {
+                this.AddSaleItem(item.product, item.quantity);
+            }
+
+            this.SaleTotal = CalculateSaleTotal();
+        }
         public DateTime SaleDate { get; protected set; }
         public decimal SaleTotal { get; protected set; }
      
@@ -20,11 +42,11 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
         public bool Cancelled { get; protected set; }
         public virtual ICollection<SaleItemVO> Items { get; protected set; }
 
-
-        //Computed properties
+        #region COMPUTED PROPERTIES
         public string SaleNumber => base.Id.ToString();
         public decimal ListPrice => Items.Sum(x => x.ListPrice);
         public string[] SaleProducts => Items.Select(x => x.ProductName).ToArray();
+        #endregion
 
         #region BUSINESS RULES
         protected ushort GetSaleItemsDiscountPercentage(int productQuantity, decimal productPrice)
@@ -48,13 +70,15 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
             throw new NotImplementedException();
         }
 
-     
 
         public void UpdateSale(Sale sale)
         {
+            this.Branch = sale.Branch;
+            this.Items = sale.Items;
+            this.SaleTotal = CalculateSaleTotal();
         }
 
-        public void AddSaleItem(ProductExternalVO product, int productQuantity)
+        private void AddSaleItem(ProductExternalVO product, int productQuantity)
         {
             var saleDiscount = GetSaleItemsDiscountPercentage(productQuantity, product.price);
             var amountPrice = (product.price * productQuantity);
@@ -73,6 +97,13 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
                totalPrice: totalPrice);
 
             this.Items.Add(saleItem);
+        }
+
+        private decimal CalculateSaleTotal()
+        {
+            var total = this.Items.Sum(x => x.TotalPrice);
+
+            return total;
         }
     }
 }
