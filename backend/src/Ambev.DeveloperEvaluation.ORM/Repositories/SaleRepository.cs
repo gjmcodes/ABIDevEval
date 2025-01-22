@@ -22,14 +22,27 @@ namespace Ambev.DeveloperEvaluation.ORM.Repositories
             return sale;
         }
 
+      
+
         public async Task<Sale> UpdateAsync(Guid id, Sale sale)
         {
-            var saleDb = await _context.Sales.FirstOrDefaultAsync(x => x.Id == id);
+            _context.Sales.Attach(sale);
+            await _context.SaveChangesAsync();
 
-
-            throw new NotImplementedException();
+            return sale;
         }
 
-       
+        public async Task<Sale> GetById(Guid id)
+        {
+            var sale = await _context.Sales
+                .Include(x => x.SaleBranch)
+                .Include(x => x.Items)
+                .Include(x => x.SaleCustomer)
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            return sale;
+        }
+
+
     }
 }

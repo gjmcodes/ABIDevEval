@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Ambev.DeveloperEvaluation.Application.Sales.CancelSale;
 using Ambev.DeveloperEvaluation.Application.Sales.CreateSale;
 using Ambev.DeveloperEvaluation.Application.Sales.DTOs;
 using Ambev.DeveloperEvaluation.Domain.Entities;
@@ -16,6 +17,8 @@ namespace Ambev.DeveloperEvaluation.Application.Sales
                         new Sale(dto.customer, dto.branch, dto.products));
 
             CreateMap<Sale, CreateSaleResult>();
+            CreateMap<Sale, CancelSaleResult>();
+
         }
     }
 }

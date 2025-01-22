@@ -50,6 +50,27 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
         public string[] SaleProducts => Items.Select(x => x.ProductName).ToArray();
         #endregion
 
+        private void AddSaleItem(ProductExternalQuery product, int productQuantity)
+        {
+            var saleDiscount = GetSaleItemsDiscountPercentage(productQuantity, product.price);
+            var amountPrice = (product.price * productQuantity);
+            var discountPrice = amountPrice * (saleDiscount / 100m);
+            var totalPrice = amountPrice - discountPrice;
+
+            var saleItem =
+                new SaleItemVO(
+               sale: this,
+               productId: product.GuidId,
+               productName: product.name,
+               productCategory: product.category,
+               productPrice: product.price,
+               quantity: productQuantity,
+               discountPercentage: saleDiscount,
+               totalPrice: totalPrice);
+
+            this.Items.Add(saleItem);
+        }
+
         #region BUSINESS RULES
         protected ushort GetSaleItemsDiscountPercentage(int productQuantity, decimal productPrice)
         {
@@ -64,7 +85,13 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
 
             return 0;
         }
-        
+       
+        private decimal CalculateSaleTotal()
+        {
+            var total = this.Items.Sum(x => x.TotalPrice);
+
+            return total;
+        }
         #endregion
 
         public ValidationResultDetail Validate()
@@ -79,33 +106,16 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
             this.Items = sale.Items;
             this.SaleTotal = CalculateSaleTotal();
         }
-
-        private void AddSaleItem(ProductExternalQuery product, int productQuantity)
+        public void CancelSale()
         {
-            var saleDiscount = GetSaleItemsDiscountPercentage(productQuantity, product.price);
-            var amountPrice = (product.price * productQuantity);
-            var discountPrice = amountPrice * (saleDiscount / 100m);
-            var totalPrice = amountPrice - discountPrice;
+            this.Cancelled = true;
 
-            var saleItem = 
-                new SaleItemVO(
-               sale: this,
-               productId: product.GuidId,
-               productName: product.name,
-               productCategory: product.category,
-               productPrice: product.price,
-               quantity: productQuantity,
-               discountPercentage: saleDiscount,
-               totalPrice: totalPrice);
-
-            this.Items.Add(saleItem);
+            foreach (var item in this.Items)
+            {
+                item.CancelItem();
+            }
         }
 
-        private decimal CalculateSaleTotal()
-        {
-            var total = this.Items.Sum(x => x.TotalPrice);
-
-            return total;
-        }
+       
     }
 }

@@ -1,7 +1,10 @@
 ﻿
+using Ambev.DeveloperEvaluation.Application.Sales.CreateSale;
+using MediatR;
+
 namespace Ambev.DeveloperEvaluation.Application.Sales.CancelSale
 {
-    public class CancelSaleCommand
+    public class CancelSaleCommand : IRequest<CancelSaleResult>
     {
         public Guid Id { get; set; }
     }

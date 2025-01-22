@@ -41,5 +41,9 @@ namespace Ambev.DeveloperEvaluation.Domain.ValueObjects
         //Computed properties
         public decimal ListPrice => ProductPrice * Quantity;
 
+        public void CancelItem()
+        {
+            Cancelled = true;
+        }
     }
 }
