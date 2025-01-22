@@ -3,6 +3,7 @@ using Ambev.DeveloperEvaluation.Application.Sales.DTOs;
 using Ambev.DeveloperEvaluation.Application.Users.CreateUser;
 using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Queries;
+using Ambev.DeveloperEvaluation.Domain.ReadOnlyRepositories;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using AutoMapper;
 using MediatR;
@@ -13,9 +14,9 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale
     public class CreateSaleHandler : IRequestHandler<CreateSaleCommand, CreateSaleResult>
     {
         private readonly ISaleRepository _saleRepository;
-        private readonly IReadOnlyProductRepository _readOnlyProductRepository;
-        private readonly IReadOnlyUserRepository _readOnlyUserRepository;
-        private readonly IReadOnlyBranchRepository _readOnlyBranchRepository;
+        private readonly IProductReadOnlyRepository _readOnlyProductRepository;
+        private readonly IUserReadOnlyRepository _readOnlyUserRepository;
+        private readonly IBranchReadOnlyRepository _readOnlyBranchRepository;
         private readonly IMapper _mapper;
 
 

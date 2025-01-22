@@ -1,7 +1,6 @@
-﻿
-using Ambev.DeveloperEvaluation.Domain.Queries;
+﻿using Ambev.DeveloperEvaluation.Domain.Queries;
 
-namespace Ambev.DeveloperEvaluation.Domain.Repositories
+namespace Ambev.DeveloperEvaluation.Domain.ReadOnlyRepositories
 {
     public interface IReadOnlyRepository<T> where T : Query
     {
