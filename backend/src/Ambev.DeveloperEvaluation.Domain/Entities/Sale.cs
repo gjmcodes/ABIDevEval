@@ -13,7 +13,7 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
             SaleDate = DateTime.UtcNow;
         }
 
-        public Sale(UserExternalVO saleCustomer, BranchExternalQuery saleBranch, (ProductExternalQuery product, int quantity)[] products) 
+        public Sale(UserExternalQuery saleCustomer, BranchExternalQuery saleBranch, (ProductExternalQuery product, int quantity)[] products) 
             : base()
         {
             this.SaleCustomer = new SaleCustomerVO(

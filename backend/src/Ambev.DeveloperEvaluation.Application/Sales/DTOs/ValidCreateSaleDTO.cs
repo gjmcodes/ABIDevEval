@@ -1,6 +1,5 @@
 ﻿
 using Ambev.DeveloperEvaluation.Domain.Queries;
-using Ambev.DeveloperEvaluation.Domain.ValueObjects;
 
 namespace Ambev.DeveloperEvaluation.Application.Sales.DTOs
 {
@@ -8,9 +7,9 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.DTOs
     {
         public (ProductExternalQuery, int)[] products;
         public BranchExternalQuery branch;
-        public UserExternalVO customer;
+        public UserExternalQuery customer;
 
-        public ValidCreateSaleDTO((ProductExternalQuery product, int quantity)[] products, BranchExternalQuery branch, UserExternalVO customer)
+        public ValidCreateSaleDTO((ProductExternalQuery product, int quantity)[] products, BranchExternalQuery branch, UserExternalQuery customer)
         {
             this.products = products;
             this.branch = branch;

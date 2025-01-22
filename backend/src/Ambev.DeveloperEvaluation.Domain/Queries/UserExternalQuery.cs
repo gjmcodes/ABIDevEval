@@ -1,7 +1,8 @@
 ﻿namespace Ambev.DeveloperEvaluation.Domain.Queries
 {
-    public class BranchExternalQuery : Query
+    public class UserExternalQuery : Query
     {
         public string name;
+        public string email;
     }
 }

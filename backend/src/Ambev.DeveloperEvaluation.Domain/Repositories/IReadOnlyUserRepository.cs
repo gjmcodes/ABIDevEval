@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+using Ambev.DeveloperEvaluation.Domain.Queries;
 
 namespace Ambev.DeveloperEvaluation.Domain.Repositories
 {
-    internal class IReadOnlyUserRepository
+    public interface IReadOnlyUserRepository : IReadOnlyRepository<UserExternalQuery>
     {
+
     }
 }
