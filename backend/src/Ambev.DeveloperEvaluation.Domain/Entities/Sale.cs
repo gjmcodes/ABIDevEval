@@ -1,5 +1,6 @@
 ﻿using Ambev.DeveloperEvaluation.Common.Validation;
 using Ambev.DeveloperEvaluation.Domain.Common;
+using Ambev.DeveloperEvaluation.Domain.Queries;
 using Ambev.DeveloperEvaluation.Domain.ValueObjects;
 
 namespace Ambev.DeveloperEvaluation.Domain.Entities
@@ -12,7 +13,7 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
             SaleDate = DateTime.UtcNow;
         }
 
-        public Sale(UserExternalVO saleCustomer, BranchExternalVO saleBranch, (ProductExternalVO product, int quantity)[] products) 
+        public Sale(UserExternalVO saleCustomer, BranchExternalQuery saleBranch, (ProductExternalQuery product, int quantity)[] products) 
             : base()
         {
             this.SaleCustomer = new SaleCustomerVO(
@@ -78,7 +79,7 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
             this.SaleTotal = CalculateSaleTotal();
         }
 
-        private void AddSaleItem(ProductExternalVO product, int productQuantity)
+        private void AddSaleItem(ProductExternalQuery product, int productQuantity)
         {
             var saleDiscount = GetSaleItemsDiscountPercentage(productQuantity, product.price);
             var amountPrice = (product.price * productQuantity);

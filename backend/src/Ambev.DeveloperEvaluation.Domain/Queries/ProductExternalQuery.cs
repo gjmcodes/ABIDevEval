@@ -1,6 +1,6 @@
-﻿namespace Ambev.DeveloperEvaluation.Domain.ValueObjects
+﻿namespace Ambev.DeveloperEvaluation.Domain.Queries
 {
-    public struct ProductExternalVO
+    public struct ProductExternalQuery
     {
         public Guid id;
         public string name;
