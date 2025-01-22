@@ -14,6 +14,22 @@ namespace Ambev.DeveloperEvaluation.ORM
             _client = new MongoClient(server);
             _db = _client.GetDatabase(database);
         }
+
+        public bool CreateCollection<T>(string collectionName, IEnumerable<T> data)
+        {
+            try
+            {
+                _db.CreateCollection(collectionName);
+                var collection = _db.GetCollection<T>(collectionName);
+                collection.InsertMany(data);
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
         public IMongoCollection<T> GetCollection<T>(string collectionName) => _db.GetCollection<T>(collectionName);
 
     }

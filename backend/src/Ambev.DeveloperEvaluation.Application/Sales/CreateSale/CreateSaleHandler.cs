@@ -54,6 +54,7 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale
                 throw new InvalidOperationException($"Branch {command.SaleBranchId} not found");
 
             var productQueryQuantity = new List<(ProductExternalQuery product, int quantity)>();
+            var _lock = new object();
 
             Parallel.ForEach(productsTask.Result, productQuery =>
             {
@@ -63,8 +64,10 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale
                 {
                     throw new InvalidOperationException($"Product {prodId} not found");
                 }
-
-                productQueryQuantity.Add(new (productQuery, command.ProductQuantity[prodId]));
+                lock (_lock)
+                {
+                    productQueryQuantity.Add(new(productQuery, command.ProductQuantity[prodId]));
+                }
             });
 
             var validCommand = new ValidCreateSaleDTO(productQueryQuantity.ToArray(), branchTask.Result, userTask.Result);

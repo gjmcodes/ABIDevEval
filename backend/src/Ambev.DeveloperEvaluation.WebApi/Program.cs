@@ -1,15 +1,20 @@
+using System.Collections;
 using Ambev.DeveloperEvaluation.Application;
 using Ambev.DeveloperEvaluation.Common.HealthChecks;
 using Ambev.DeveloperEvaluation.Common.Logging;
 using Ambev.DeveloperEvaluation.Common.Security;
 using Ambev.DeveloperEvaluation.Common.Validation;
 using Ambev.DeveloperEvaluation.Domain.Entities;
+using Ambev.DeveloperEvaluation.Domain.Queries;
 using Ambev.DeveloperEvaluation.Domain.ValueObjects;
 using Ambev.DeveloperEvaluation.IoC;
 using Ambev.DeveloperEvaluation.ORM;
+using Ambev.DeveloperEvaluation.ORM.ReadOnlyRepositories;
+using Ambev.DeveloperEvaluation.WebApi.Faker;
 using Ambev.DeveloperEvaluation.WebApi.Middleware;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using MongoDB.Bson;
 using Serilog;
 
 namespace Ambev.DeveloperEvaluation.WebApi;
@@ -84,8 +89,30 @@ public class Program
             using (var scope = app.Services.CreateScope())
             {
                 var ctx = scope.ServiceProvider.GetRequiredService<DefaultContext>();
-
                 ctx.Database.EnsureCreated();
+
+                var rdCtx = scope.ServiceProvider.GetRequiredService<ReadOnlyContext>();
+
+                var prodColl = rdCtx.GetCollection<ProductReadOnlyRepository>(ProductReadOnlyRepository.COLLECTION_NAME);
+                if(prodColl.EstimatedDocumentCount() <= 0)
+                {
+                    var prods = FakeDataGenerator.GenerateFakeProductsQuery(50);
+                    rdCtx.CreateCollection(ProductReadOnlyRepository.COLLECTION_NAME, prods);
+                }
+
+                var userColl = rdCtx.GetCollection<UserExternalQuery>(UserReadOnlyRepository.COLLECTION_NAME);
+                if (userColl.EstimatedDocumentCount() <= 0)
+                {
+                    var users = FakeDataGenerator.GenerateFakeUsersQuery(5);
+                    rdCtx.CreateCollection(UserReadOnlyRepository.COLLECTION_NAME, users);
+                }
+
+                var branchColl = rdCtx.GetCollection<BranchExternalQuery>(BranchReadOnlyRepository.COLLECTION_NAME);
+                if (branchColl.EstimatedDocumentCount() <= 0)
+                {
+                    var branches = FakeDataGenerator.GenerateFakeBranchesQuery(2);
+                    rdCtx.CreateCollection(BranchReadOnlyRepository.COLLECTION_NAME, branches);
+                }
             }
             app.Run();
         }

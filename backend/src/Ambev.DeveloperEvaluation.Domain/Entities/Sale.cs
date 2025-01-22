@@ -9,7 +9,6 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
     {
         protected Sale()
         {
-            Items = new List<SaleItemVO>();
             SaleDate = DateTime.UtcNow;
         }
 
@@ -23,10 +22,12 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
                 customerEmail: saleCustomer.email
                );
 
-            this.Branch = new SaleBranchVO(
+            this.SaleBranch = new SaleBranchVO(
                 sale: this,
                 branchId: saleBranch.GuidId,
                 branchName: saleBranch.name);
+
+            this.Items = new List<SaleItemVO>();
 
             foreach (var item in products)
             {
@@ -39,7 +40,7 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
         public decimal SaleTotal { get; protected set; }
      
         public SaleCustomerVO SaleCustomer { get; protected set; }
-        public SaleBranchVO Branch { get; protected set; }
+        public SaleBranchVO SaleBranch { get; protected set; }
         public bool Cancelled { get; protected set; }
         public virtual ICollection<SaleItemVO> Items { get; protected set; }
 
@@ -74,7 +75,7 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
 
         public void UpdateSale(Sale sale)
         {
-            this.Branch = sale.Branch;
+            this.SaleBranch = sale.SaleBranch;
             this.Items = sale.Items;
             this.SaleTotal = CalculateSaleTotal();
         }

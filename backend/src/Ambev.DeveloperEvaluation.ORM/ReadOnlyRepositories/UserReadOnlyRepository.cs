@@ -5,7 +5,7 @@ namespace Ambev.DeveloperEvaluation.ORM.ReadOnlyRepositories
 {
     public class UserReadOnlyRepository : ReadOnlyRepository<UserExternalQuery>, IUserReadOnlyRepository
     {
-        const string COLLECTION_NAME = "Users";
+        public const string COLLECTION_NAME = "Users";
 
         public UserReadOnlyRepository(ReadOnlyContext ctx) 
             : base(ctx, COLLECTION_NAME)

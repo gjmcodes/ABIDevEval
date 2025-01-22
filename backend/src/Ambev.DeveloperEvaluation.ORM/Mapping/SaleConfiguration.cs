@@ -32,7 +32,7 @@ namespace Ambev.DeveloperEvaluation.ORM.Mapping
 
 
 
-            builder.OwnsOne(s => s.Branch, branch =>
+            builder.OwnsOne(s => s.SaleBranch, branch =>
             {
                 branch.ToTable("SalesBranches");
                 branch.HasKey(b => new { b.SaleId, b.BranchId });

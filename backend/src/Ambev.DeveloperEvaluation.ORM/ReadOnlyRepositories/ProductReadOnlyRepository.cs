@@ -6,7 +6,7 @@ namespace Ambev.DeveloperEvaluation.ORM.ReadOnlyRepositories
 {
     public class ProductReadOnlyRepository : ReadOnlyRepository<ProductExternalQuery>, IProductReadOnlyRepository
     {
-        const string COLLECTION_NAME = "Products";
+        public const string COLLECTION_NAME = "Products";
 
         public ProductReadOnlyRepository(ReadOnlyContext ctx) 
             : base(ctx, COLLECTION_NAME)
