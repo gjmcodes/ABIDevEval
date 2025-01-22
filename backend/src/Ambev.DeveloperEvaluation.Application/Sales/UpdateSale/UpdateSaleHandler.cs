@@ -46,7 +46,11 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.UpdateSale
 
             var sale = _mapper.Map<Sale>(validSale);
 
-            //TODO: add cancellation token to repo
+            var saleValidation = sale.Validate();
+            if(!saleValidation.IsValid)
+            {
+                throw new InvalidOperationException(string.Join(Environment.NewLine, saleValidation.Errors));
+            }
             var createdSale = await _saleRepository.UpdateAsync(request.Id, sale);
             var result = _mapper.Map<SaleResult>(createdSale);
 

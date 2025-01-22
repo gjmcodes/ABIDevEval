@@ -36,12 +36,6 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale
 
         public async Task<SaleResult> Handle(CreateSaleCommand command, CancellationToken cancellationToken)
         {
-            //var validator = new CreateSaleCommandValidator();
-            //var validationResult = await validator.ValidateAsync(command, cancellationToken);
-
-            //if (!validationResult.IsValid)
-            //    throw new ValidationException(validationResult.Errors);
-
             var userTask = _readOnlyUserRepository.GetById(command.UserId);
             var productsTask = _readOnlyProductRepository.GetAllByIds(command.ProductQuantity.Keys.ToArray());
             var branchTask = _readOnlyBranchRepository.GetById(command.SaleBranchId);
@@ -75,6 +69,11 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale
 
 
             var sale = _mapper.Map<Sale>(validCommand);
+            var saleValidation = sale.Validate();
+            if (!saleValidation.IsValid)
+            {
+                throw new InvalidOperationException(string.Join(Environment.NewLine, saleValidation.Errors));
+            }
 
             //TODO: add cancellation token to repo
             var createdSale = await _saleRepository.CreateAsync(sale);

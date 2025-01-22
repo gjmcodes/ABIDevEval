@@ -1,4 +1,5 @@
-﻿using Ambev.DeveloperEvaluation.Common.Validation;
+﻿using Ambev.DeveloperEvaluation.Application.Sales.Shared.Validations;
+using Ambev.DeveloperEvaluation.Common.Validation;
 using Ambev.DeveloperEvaluation.Domain.Common;
 using Ambev.DeveloperEvaluation.Domain.Queries;
 using Ambev.DeveloperEvaluation.Domain.ValueObjects;
@@ -97,7 +98,14 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
 
         public ValidationResultDetail Validate()
         {
-            throw new NotImplementedException();
+            var validator = new SaleValidator();
+            var result = validator.Validate(this);
+
+            return new ValidationResultDetail
+            {
+                IsValid = result.IsValid,
+                Errors = result.Errors.Select(o => (ValidationErrorDetail)o)
+            };
         }
 
 
