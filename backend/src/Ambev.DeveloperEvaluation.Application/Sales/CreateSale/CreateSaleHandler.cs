@@ -1,5 +1,8 @@
-﻿using Ambev.DeveloperEvaluation.Application.Users.CreateUser;
+﻿using System.Security.Cryptography;
+using Ambev.DeveloperEvaluation.Application.Sales.DTOs;
+using Ambev.DeveloperEvaluation.Application.Users.CreateUser;
 using Ambev.DeveloperEvaluation.Domain.Entities;
+using Ambev.DeveloperEvaluation.Domain.Queries;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using AutoMapper;
 using MediatR;
@@ -10,10 +13,13 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale
     public class CreateSaleHandler : IRequestHandler<CreateSaleCommand, CreateSaleResult>
     {
         private readonly ISaleRepository _saleRepository;
+        private readonly IReadOnlyProductRepository _readOnlyProductRepository;
+        private readonly IReadOnlyUserRepository _readOnlyUserRepository;
+        private readonly IReadOnlyBranchRepository _readOnlyBranchRepository;
         private readonly IMapper _mapper;
 
 
-        public Task<CreateSaleResult> Handle(CreateSaleCommand command, CancellationToken cancellationToken)
+        public async Task<CreateSaleResult> Handle(CreateSaleCommand command, CancellationToken cancellationToken)
         {
             //var validator = new CreateSaleCommandValidator();
             //var validationResult = await validator.ValidateAsync(command, cancellationToken);
@@ -21,15 +27,41 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale
             //if (!validationResult.IsValid)
             //    throw new ValidationException(validationResult.Errors);
 
-            var existingUser = await _userRepository.GetByEmailAsync(command.Email, cancellationToken);
-            if (existingUser != null)
-                throw new InvalidOperationException($"User with email {command.Email} already exists");
+            var userTask = _readOnlyUserRepository.GetById(command.UserId);
+            var productsTask = _readOnlyProductRepository.GetAllByIds(command.ProductQuantity.Keys.ToArray());
+            var branchTask = _readOnlyBranchRepository.GetById(command.SaleBranchId);
 
-            var user = _mapper.Map<User>(command);
-            user.Password = _passwordHasher.HashPassword(command.Password);
+            await Task.WhenAll(userTask, productsTask, branchTask);
 
-            var createdUser = await _userRepository.CreateAsync(user, cancellationToken);
-            var result = _mapper.Map<CreateUserResult>(createdUser);
+            if(userTask.Result == null)
+                throw new InvalidOperationException($"User {command.UserId} not found");
+
+            if(branchTask.Result == null)
+                throw new InvalidOperationException($"Branch {command.SaleBranchId} not found");
+
+            var productQueryQuantity = new List<(ProductExternalQuery product, int quantity)>();
+
+            Parallel.ForEach(productsTask.Result, productQuery =>
+            {
+                var prodId = productQuery.id;
+
+                if (!command.ProductQuantity.ContainsKey(prodId))
+                {
+                    throw new InvalidOperationException($"Product {prodId} not found");
+                }
+
+                productQueryQuantity.Add(new (productQuery, command.ProductQuantity[prodId]));
+            });
+
+            var validCommand = new ValidCreateSaleDTO(productQueryQuantity.ToArray(), branchTask.Result, userTask.Result);
+
+
+            var sale = _mapper.Map<Sale>(validCommand);
+
+            //TODO: add cancellation token to repo
+            var createdSale = await _saleRepository.CreateAsync(sale);
+            var result = _mapper.Map<CreateSaleResult>(createdSale);
+
             return result;
         }
     }

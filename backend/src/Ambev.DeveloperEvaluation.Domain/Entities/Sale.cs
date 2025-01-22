@@ -19,7 +19,7 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
             this.SaleCustomer = new SaleCustomerVO(
                 sale: this,
                 customerName: saleCustomer.name,
-                customerId: saleCustomer.userId,
+                customerId: saleCustomer.id,
                 customerEmail: saleCustomer.email
                );
 

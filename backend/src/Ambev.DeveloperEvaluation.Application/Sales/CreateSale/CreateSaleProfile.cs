@@ -12,6 +12,8 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale
             CreateMap<ValidCreateSaleDTO, Sale>()
                 .ConstructUsing(dto => 
                         new Sale(dto.customer, dto.branch, dto.products ));
+
+            
         }
     }
 }
