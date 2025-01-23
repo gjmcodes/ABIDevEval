@@ -45,7 +45,7 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales
         [HttpGet("{saleId}")]
         [ProducesResponseType(typeof(ApiResponseWithData<SaleQuery>), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> CreateSale([FromQuery] string saleId, CancellationToken cancellationToken)
+        public async Task<IActionResult> CreateSale([FromRoute] string saleId, CancellationToken cancellationToken)
         {
             Guid saleGuid;
             var valid = Guid.TryParse(saleId, out saleGuid);
