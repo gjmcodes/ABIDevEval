@@ -15,6 +15,13 @@ namespace Ambev.DeveloperEvaluation.ORM.ReadOnlyRepositories
             _collection = _ctx.GetCollection<T>(collectionName);
         }
 
+        public async Task<IEnumerable<T>> GetAll()
+        {
+            var result = await _collection.Find(_ => true).ToListAsync();
+
+            return result;
+        }
+
         public async Task<IEnumerable<T>> GetAllByIds(Guid[] ids)
         {
             var _ids = ids.Select(x => x.ToString());

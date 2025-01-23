@@ -11,9 +11,9 @@ namespace Ambev.DeveloperEvaluation.WebApi.Faker
         {
             var productsFaker = new Faker<ProductExternalQuery>()
                 .RuleFor(x => x.id, f => Guid.NewGuid().ToString())
-                .RuleFor(x => x.price, f => f.Finance.Amount(50.0m, 5000.0m)) 
-                .RuleFor(x => x.name, f => f.Commerce.ProductName())
-                .RuleFor(x => x.category, f => f.Commerce.Categories(1)[0]);
+                .RuleFor(x => x.Price, f => f.Finance.Amount(50.0m, 5000.0m)) 
+                .RuleFor(x => x.Name, f => f.Commerce.ProductName())
+                .RuleFor(x => x.Category, f => f.Commerce.Categories(1)[0]);
             
             var data =  productsFaker.Generate(count);
 
@@ -24,7 +24,7 @@ namespace Ambev.DeveloperEvaluation.WebApi.Faker
         {
             var branchFaker = new Faker<BranchExternalQuery>()
                .RuleFor(x => x.id, f => Guid.NewGuid().ToString())
-               .RuleFor(x => x.name, f => f.Company.Cnpj());
+               .RuleFor(x => x.Name, f => f.Company.Cnpj());
 
             var data = branchFaker.Generate(count);
 
@@ -35,8 +35,8 @@ namespace Ambev.DeveloperEvaluation.WebApi.Faker
         {
             var userFaker = new Faker<UserExternalQuery>()
                .RuleFor(x => x.id, f => Guid.NewGuid().ToString())
-               .RuleFor(x => x.name, f => f.Name.FullName())
-               .RuleFor(x => x.email, f => f.Internet.Email());
+               .RuleFor(x => x.Name, f => f.Name.FullName())
+               .RuleFor(x => x.Email, f => f.Internet.Email());
 
             var data = userFaker.Generate(count);
 

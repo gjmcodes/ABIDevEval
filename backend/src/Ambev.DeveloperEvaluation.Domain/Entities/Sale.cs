@@ -17,15 +17,15 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
         {
             this.SaleCustomer = new SaleCustomerVO(
                 sale: this,
-                customerName: saleCustomer.name,
+                customerName: saleCustomer.Name,
                 customerId: saleCustomer.GuidId,
-                customerEmail: saleCustomer.email
+                customerEmail: saleCustomer.Email
                );
 
             this.SaleBranch = new SaleBranchVO(
                 sale: this,
                 branchId: saleBranch.GuidId,
-                branchName: saleBranch.name);
+                branchName: saleBranch.Name);
 
             this.Items = new List<SaleItemVO>();
 
@@ -54,8 +54,8 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
 
         private void AddSaleItem(ProductExternalQuery product, int productQuantity)
         {
-            var saleDiscount = GetSaleItemsDiscountPercentage(productQuantity, product.price);
-            var amountPrice = (product.price * productQuantity);
+            var saleDiscount = GetSaleItemsDiscountPercentage(productQuantity, product.Price);
+            var amountPrice = (product.Price * productQuantity);
             var discountPrice = amountPrice * (saleDiscount / 100m);
             var totalPrice = amountPrice - discountPrice;
 
@@ -63,9 +63,9 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
                 new SaleItemVO(
                sale: this,
                productId: product.GuidId,
-               productName: product.name,
-               productCategory: product.category,
-               productPrice: product.price,
+               productName: product.Name,
+               productCategory: product.Category,
+               productPrice: product.Price,
                quantity: productQuantity,
                discountPercentage: saleDiscount,
                totalPrice: totalPrice);

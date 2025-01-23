@@ -1,12 +1,10 @@
-using System.Collections;
 using Ambev.DeveloperEvaluation.Application;
+using Ambev.DeveloperEvaluation.BUS;
 using Ambev.DeveloperEvaluation.Common.HealthChecks;
 using Ambev.DeveloperEvaluation.Common.Logging;
 using Ambev.DeveloperEvaluation.Common.Security;
 using Ambev.DeveloperEvaluation.Common.Validation;
-using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Queries;
-using Ambev.DeveloperEvaluation.Domain.ValueObjects;
 using Ambev.DeveloperEvaluation.IoC;
 using Ambev.DeveloperEvaluation.ORM;
 using Ambev.DeveloperEvaluation.ORM.ReadOnlyRepositories;
@@ -14,7 +12,6 @@ using Ambev.DeveloperEvaluation.WebApi.Faker;
 using Ambev.DeveloperEvaluation.WebApi.Middleware;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using MongoDB.Bson;
 using Serilog;
 
 namespace Ambev.DeveloperEvaluation.WebApi;
@@ -29,6 +26,7 @@ public class Program
 
             WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
             builder.AddDefaultLogging();
+            builder.Logging.AddConsole();
 
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
@@ -67,7 +65,7 @@ public class Program
             });
 
             builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
-
+            builder.Services.AddScoped<IBUS, Bus>();
             var app = builder.Build();
             app.UseMiddleware<ValidationExceptionMiddleware>();
 

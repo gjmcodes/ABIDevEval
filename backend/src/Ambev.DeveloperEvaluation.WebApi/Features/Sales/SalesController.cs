@@ -4,6 +4,9 @@ using Ambev.DeveloperEvaluation.Application.Sales.CreateSale;
 using Ambev.DeveloperEvaluation.Application.Sales.Shared.Results;
 using Ambev.DeveloperEvaluation.Application.Sales.UpdateSale;
 using Ambev.DeveloperEvaluation.Application.Users.CreateUser;
+using Ambev.DeveloperEvaluation.Domain.Queries;
+using Ambev.DeveloperEvaluation.Domain.ReadOnlyRepositories;
+using Ambev.DeveloperEvaluation.ORM.ReadOnlyRepositories;
 using Ambev.DeveloperEvaluation.WebApi.Common;
 using Ambev.DeveloperEvaluation.WebApi.Features.Sales.CancelSale;
 using Ambev.DeveloperEvaluation.WebApi.Features.Sales.CancelSaleItem;
@@ -24,13 +27,62 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales
     {
         private readonly IMediator _mediator;
         private readonly IMapper _mapper;
-
-        public SalesController(IMediator mediator, IMapper mapper)
+        private readonly ISaleReadOnlyRepository _saleReadOnlyRepository;
+        public SalesController(IMediator mediator, IMapper mapper, ISaleReadOnlyRepository saleReadOnlyRepository)
         {
             _mediator = mediator;
             _mapper = mapper;
+            _saleReadOnlyRepository = saleReadOnlyRepository;
         }
 
+
+        /// <summary>
+        /// Get a sale
+        /// </summary>
+        /// <param name="request">The sale requested</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>The sale details</returns>
+        [HttpGet("{saleId}")]
+        [ProducesResponseType(typeof(ApiResponseWithData<SaleQuery>), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> CreateSale([FromQuery] string saleId, CancellationToken cancellationToken)
+        {
+            Guid saleGuid;
+            var valid = Guid.TryParse(saleId, out saleGuid);
+            if (!valid)
+                return BadRequest("Sale Id not valid");
+
+            var sale = await _saleReadOnlyRepository.GetById(saleGuid);
+
+            if (sale == null)
+                return NotFound("Sale not found");
+
+            return Created(string.Empty, new ApiResponseWithData<SaleQuery>
+            {
+                Success = true,
+                Message = "Sale created successfully",
+                Data = sale
+            });
+        }
+
+        /// <summary>
+        /// Retrieves all sales
+        /// </summary>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>The sales details if found</returns>
+        [HttpGet]
+        [ProducesResponseType(typeof(ProductExternalQuery[]), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
+        {
+            var sales = await _saleReadOnlyRepository.GetAll();
+
+            if (sales == null || sales.Count() == 0)
+                return NotFound("No sales found");
+
+            return Ok(sales.ToArray());
+        }
 
         /// <summary>
         /// Creates a new user

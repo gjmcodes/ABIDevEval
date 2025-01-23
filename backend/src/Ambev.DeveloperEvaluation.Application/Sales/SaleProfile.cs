@@ -21,6 +21,11 @@ namespace Ambev.DeveloperEvaluation.Application.Sales
             CreateMap<SaleBranchVO, SaleBranchResult>();
             CreateMap<SaleCustomerVO, SaleCustomerResult>();
             CreateMap<SaleItemVO, SaleItemResult>();
+
+            CreateMap<SaleResult, SaleQuery>();
+            CreateMap<SaleBranchResult, SaleBranchQuery>();
+            CreateMap<SaleCustomerResult, SaleCustomerQuery>();
+            CreateMap<SaleItemResult, SaleItemQuery>();
         }
     }
 }

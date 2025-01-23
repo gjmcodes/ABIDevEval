@@ -8,6 +8,8 @@ using Ambev.DeveloperEvaluation.WebApi.Features.Users.DeleteUser;
 using Ambev.DeveloperEvaluation.Application.Users.CreateUser;
 using Ambev.DeveloperEvaluation.Application.Users.GetUser;
 using Ambev.DeveloperEvaluation.Application.Users.DeleteUser;
+using Ambev.DeveloperEvaluation.Domain.ReadOnlyRepositories;
+using Ambev.DeveloperEvaluation.Domain.Queries;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Users;
 
@@ -20,16 +22,18 @@ public class UsersController : BaseController
 {
     private readonly IMediator _mediator;
     private readonly IMapper _mapper;
+    private readonly IUserReadOnlyRepository _userReadOnlyRepository;
 
     /// <summary>
     /// Initializes a new instance of UsersController
     /// </summary>
     /// <param name="mediator">The mediator instance</param>
     /// <param name="mapper">The AutoMapper instance</param>
-    public UsersController(IMediator mediator, IMapper mapper)
+    public UsersController(IMediator mediator, IMapper mapper, IUserReadOnlyRepository userReadOnlyRepository)
     {
         _mediator = mediator;
         _mapper = mapper;
+        _userReadOnlyRepository = userReadOnlyRepository;
     }
 
     /// <summary>
@@ -88,6 +92,25 @@ public class UsersController : BaseController
             Message = "User retrieved successfully",
             Data = _mapper.Map<GetUserResponse>(response)
         });
+    }
+
+    /// <summary>
+    /// Retrieves all users
+    /// </summary>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>The users details if found</returns>
+    [HttpGet]
+    [ProducesResponseType(typeof(UserExternalQuery[]), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
+    {
+        var users = await _userReadOnlyRepository.GetAll();
+
+        if (users == null || users.Count() == 0)
+            return NotFound("No users found");
+
+        return Ok(users.ToArray());
     }
 
     /// <summary>

@@ -20,5 +20,7 @@ public class InfrastructureModuleInitializer : IModuleInitializer
         builder.Services.AddScoped<IProductReadOnlyRepository, ProductReadOnlyRepository>();
         builder.Services.AddScoped<IUserReadOnlyRepository, UserReadOnlyRepository>();
         builder.Services.AddScoped<IBranchReadOnlyRepository, BranchReadOnlyRepository>();
+        builder.Services.AddScoped<ISaleReadOnlyRepository, SaleReadOnlyRepository>();
+
     }
 }

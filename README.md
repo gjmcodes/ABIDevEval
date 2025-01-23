@@ -1,5 +1,24 @@
 # Developer Evaluation Project
 
+`Developer Considerations`
+
+ - Readonly repositories were created Products, Branches and Users as a step towards CQRS and microservices
+ - Readonly repositories are using MongoDB for faster IO operations
+ - As a microservice this API is considering mostly the Sales domain
+ - Relationship with sales that uses external domain entities are considered `Value Objects`  
+ - When the project starts it'll insert fake data
+ - The examiner can use swagger to fetch data from required resources to create a sale
+
+
+
+## How to run
+
+ - Open a prompt shell in the directory /backend
+ - Execute the following command: ```docker-compose up```
+ - Open the project swagger through the link: [https://localhost:8081/swagger](https://localhost:8081/swagger)
+
+
+
 `READ CAREFULLY`
 
 ## Instructions
