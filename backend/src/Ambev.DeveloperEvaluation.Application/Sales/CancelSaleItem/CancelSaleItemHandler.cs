@@ -1,5 +1,4 @@
-﻿using Ambev.DeveloperEvaluation.Application.Sales.CancelSale;
-using Ambev.DeveloperEvaluation.Application.Sales.Shared.Results;
+﻿using Ambev.DeveloperEvaluation.Application.Sales.Shared.Results;
 using Ambev.DeveloperEvaluation.BUS;
 using Ambev.DeveloperEvaluation.Domain.Enums;
 using Ambev.DeveloperEvaluation.Domain.Queries;
